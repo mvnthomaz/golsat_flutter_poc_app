@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/contact/form.dart';
 import 'package:golsat_flutter_poc_app/src/shared/models/contact.dart';
+import 'package:http/http.dart' as http;
 
 class FirstRoute extends StatefulWidget {
   @override
@@ -81,5 +82,21 @@ class LineContact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile();
+  }
+}
+
+Future<List<Contact>> fetchContact() async {
+  final response = await http
+      .get(URL_API + "/movie/now_playing?language=pt-BR&api_key=" + KEY_API);
+
+  if (response.statusCode == 200) {
+    print(json.decode(response.body));
+    // If the call to the server was successful, parse the JSON.
+    return (json.decode(response.body)['results'] as List)
+        .map((movie) => Filme.fromJson(movie))
+        .toList();
+  } else {
+    // If that call was not successful, throw an error.
+    throw Exception('Falha ao carregar os filmes');
   }
 }
