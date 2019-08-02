@@ -1,4 +1,5 @@
-[
+{
+  "contacts": [
     {
       "name": "Marcos Thomaz",
       "phone": "43996398824",
@@ -21,3 +22,4 @@
       "id": 3
     }
   ]
+}
