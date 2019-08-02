@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/contact/form.dart';
+import 'package:golsat_flutter_poc_app/src/contact/list_bloc.dart';
 import 'package:golsat_flutter_poc_app/src/shared/models/contact.dart';
-import 'package:http/http.dart' as http;
+import 'package:golsat_flutter_poc_app/src/shared/repositories/general_api.dart';
 
 class FirstRoute extends StatefulWidget {
   @override
@@ -9,7 +10,19 @@ class FirstRoute extends StatefulWidget {
 }
 
 class _FirstRouteState extends State<FirstRoute> {
-  Future<List<Contact>> filmes;
+  HomeBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = HomeBloc(GeneralAPI());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
+  }
 
   Widget card(Contact contact) {
     return Card(
@@ -34,25 +47,20 @@ class _FirstRouteState extends State<FirstRoute> {
       appBar: AppBar(
         title: Text('PoC Golsat Flutter App'),
       ),
-      body: FutureBuilder<List<Contact>>(
-        future: filmes,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
+      body: StreamBuilder<List<Contact>>(
+          stream: bloc.contactsStream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return Center(child: CircularProgressIndicator());
+            if (snapshot.hasError) return Text(snapshot.error);
             List<Contact> contacts = snapshot.data;
             return ListView.builder(
-              itemCount: 10,
+              itemCount: contacts.length,
               itemBuilder: (BuildContext context, int index) {
                 return card(contacts[index]);
               },
             );
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-
-          // Animação loading
-          return Center(child: CircularProgressIndicator());
-        },
-      ),
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -85,18 +93,18 @@ class LineContact extends StatelessWidget {
   }
 }
 
-Future<List<Contact>> fetchContact() async {
-  final response = await http
-      .get(URL_API + "/movie/now_playing?language=pt-BR&api_key=" + KEY_API);
+// Future<List<Contact>> fetchContact() async {
+//   final response = await http
+//       .get(URL_API + "/movie/now_playing?language=pt-BR&api_key=" + KEY_API);
 
-  if (response.statusCode == 200) {
-    print(json.decode(response.body));
-    // If the call to the server was successful, parse the JSON.
-    return (json.decode(response.body)['results'] as List)
-        .map((movie) => Filme.fromJson(movie))
-        .toList();
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Falha ao carregar os filmes');
-  }
-}
+//   if (response.statusCode == 200) {
+//     print(json.decode(response.body));
+//     // If the call to the server was successful, parse the JSON.
+//     return (json.decode(response.body)['results'] as List)
+//         .map((movie) => Filme.fromJson(movie))
+//         .toList();
+//   } else {
+//     // If that call was not successful, throw an error.
+//     throw Exception('Falha ao carregar os filmes');
+//   }
+// }

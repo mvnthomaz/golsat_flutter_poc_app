@@ -1,0 +1,23 @@
+[
+    {
+      "name": "Marcos Thomaz",
+      "phone": "43996398824",
+      "email": "mvnthomaz@gmail.com",
+      "image": "img_src",
+      "id": 1
+    },
+    {
+      "name": "Jean Thomaz",
+      "phone": "43991167769",
+      "email": "jkeanm@gmail.com",
+      "image": "img_src",
+      "id": 2
+    },
+    {
+      "name": "Elizeu Thomaz",
+      "phone": "43991220774",
+      "email": "thomazelizeu@gmail.com",
+      "image": "img_src",
+      "id": 3
+    }
+  ]
