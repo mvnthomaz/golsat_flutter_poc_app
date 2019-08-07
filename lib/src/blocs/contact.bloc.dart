@@ -9,8 +9,12 @@ class ContactBloc {
   Observable<List<Contact>> get allContacts => _contactsFetcher.stream;
 
   fetchAllContacts() async {
-    List<Contact> contact = await _repository.fetchAllMovies();
+    List<Contact> contact = await _repository.fetchAllContacts();
     _contactsFetcher.sink.add(contact);
+  }
+
+  postContact(Contact contact) async {
+    /*Contact contact2 = */await _repository.postContact(contact);
   }
 
   dispose() {

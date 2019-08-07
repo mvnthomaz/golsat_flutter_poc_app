@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:golsat_flutter_poc_app/src/blocs/contact.bloc.dart';
+import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
 
 class FormContact extends StatefulWidget {
   @override
@@ -6,6 +8,7 @@ class FormContact extends StatefulWidget {
 }
 
 class _FormContactState extends State<FormContact> {
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,8 +16,11 @@ class _FormContactState extends State<FormContact> {
       appBar: AppBar(
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: Icon(Icons.save),
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(icon: Icon(Icons.save), onPressed: () {
+              var contact = Contact();
+              // contact.name = _formKey.
+            }),
           ),
         ],
       ),
@@ -23,6 +29,7 @@ class _FormContactState extends State<FormContact> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Form(
+            key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -48,6 +55,9 @@ class _FormContactState extends State<FormContact> {
                             return 'Campo obrigatório';
                           }
                           return null;
+                        },
+                        onSaved: (value) {
+                          print(value);
                         },
                       ),
                       TextFormField(

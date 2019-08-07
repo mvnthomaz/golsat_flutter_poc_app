@@ -13,6 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    bloc.fetchAllContacts();
   }
 
   @override
@@ -40,7 +41,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bloc.fetchAllContacts();
     return Scaffold(
       appBar: AppBar(
         title: Text('PoC Golsat Flutter App'),

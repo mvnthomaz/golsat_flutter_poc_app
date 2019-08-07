@@ -4,5 +4,6 @@ import 'package:golsat_flutter_poc_app/src/provider/api.provider.dart';
 class ContactRepository {
   final contactsApiProvider = ContactApiProvider();
 
-  Future<List<Contact>> fetchAllMovies() => contactsApiProvider.fetchContactList();
+  Future<List<Contact>> fetchAllContacts() => contactsApiProvider.fetchContactList();
+  Future<Contact> postContact(Contact contact) => contactsApiProvider.postContact(contact);
 }

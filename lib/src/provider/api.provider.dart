@@ -1,6 +1,6 @@
 import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
 import 'package:golsat_flutter_poc_app/src/shared/constants.dart';
-import 'package:http/http.dart' show Client;
+import 'package:http/http.dart' show Client, Response;
 import 'dart:convert';
 
 class ContactApiProvider {
@@ -16,5 +16,15 @@ class ContactApiProvider {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load post');
     }
+  }
+
+  Future<Contact> postContact(Contact contact) async {
+    return await client.post(URL_API + "/contacts", body: null)
+        .then((Response response) {
+          var r = response.statusCode;
+          if( r ==  200 ) {
+
+          }
+    });
   }
 }
