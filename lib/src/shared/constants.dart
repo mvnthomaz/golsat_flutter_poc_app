@@ -1,1 +1,1 @@
-const String URL_API = "https://my-json-server.typicode.com/typicode/demo/db";
+const String URL_API = "http://vm-devtest1-ubu.gs.interno:3301";
