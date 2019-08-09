@@ -8,7 +8,16 @@ class FormContact extends StatefulWidget {
 }
 
 class _FormContactState extends State<FormContact> {
-  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +28,11 @@ class _FormContactState extends State<FormContact> {
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(icon: Icon(Icons.save), onPressed: () {
               var contact = Contact();
-              // contact.name = _formKey.
+              contact.name = nameController.text;
+              contact.phone = phoneController.text;
+              contact.email = emailController.text;
+
+              bloc.postContact(contact);
             }),
           ),
         ],
@@ -29,7 +42,6 @@ class _FormContactState extends State<FormContact> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Form(
-            key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -44,6 +56,7 @@ class _FormContactState extends State<FormContact> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        controller: nameController,
                         decoration: InputDecoration(
                           hintText: 'Nome',
                           prefixIcon: Icon(Icons.person),
@@ -61,6 +74,7 @@ class _FormContactState extends State<FormContact> {
                         },
                       ),
                       TextFormField(
+                        controller: phoneController,
                         decoration: InputDecoration(
                           hintText: 'Telefone',
                           prefixIcon: Icon(Icons.phone),
@@ -75,6 +89,7 @@ class _FormContactState extends State<FormContact> {
                         },
                       ),
                       TextFormField(
+                        controller: emailController,
                         decoration: InputDecoration(
                           hintText: 'E-mail',
                           prefixIcon: Icon(Icons.email),

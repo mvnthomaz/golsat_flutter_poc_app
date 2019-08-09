@@ -13,9 +13,7 @@ class ContactBloc {
     _contactsFetcher.sink.add(contact);
   }
 
-  postContact(Contact contact) async {
-    /*Contact contact2 = */await _repository.postContact(contact);
-  }
+  postContact(Contact contact) async => _repository.postContact(contact);
 
   dispose() {
     _contactsFetcher.close();
