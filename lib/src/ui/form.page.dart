@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/blocs/contact.bloc.dart';
 import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
+import 'package:golsat_flutter_poc_app/src/models/result_image.model.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FormContact extends StatefulWidget {
   @override
@@ -8,14 +12,35 @@ class FormContact extends StatefulWidget {
 }
 
 class _FormContactState extends State<FormContact> {
+  File _image;
+
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
 
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  sendImage() async {
+//    var resultImage = bloc.postImage(_image);
+//    return resultImage;
+    FutureBuilder<ResultImage>(
+      future: bloc.postImage(_image),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+
+
+        }
+
+        // By default, show a loading spinner.
+        return CircularProgressIndicator();
+      },
+    );
+
   }
 
   @override
@@ -32,7 +57,13 @@ class _FormContactState extends State<FormContact> {
               contact.phone = phoneController.text;
               contact.email = emailController.text;
 
-              bloc.postContact(contact);
+              var resultImage = sendImage();
+              if( resultImage != null ) {
+                var c = bloc.postContact(contact);
+                if (c != null) {
+                  Navigator.pop(context, true);
+                }
+              }
             }),
           ),
         ],
@@ -49,7 +80,12 @@ class _FormContactState extends State<FormContact> {
                 CircleAvatar(
                   radius: 90,
                   backgroundColor: Color.fromRGBO(235, 235, 235, 1),
-                  child: Text('Tirar foto'),
+                  child: GestureDetector(
+                    onTap: () => getImage(),
+                    child: _image == null
+                        ? Text('Tirar foto')
+                        : Image.file(_image),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 50.0, 0, 0),

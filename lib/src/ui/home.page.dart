@@ -65,13 +65,21 @@ class _HomePageState extends State<HomePage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FormContact()),
-          );
+          _openForm();
         },
         child: Icon(Icons.person_add),
       ),
     );
+  }
+
+  _openForm() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FormContact()),
+    );
+    if( result == true ) {
+      // var bloc = ContactBloc();
+      bloc.fetchAllContacts();
+    }
   }
 }

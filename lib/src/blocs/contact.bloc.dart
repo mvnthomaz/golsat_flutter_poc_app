@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
+import 'package:golsat_flutter_poc_app/src/models/result_image.model.dart';
 import 'package:golsat_flutter_poc_app/src/repositories/contact.repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,7 +16,8 @@ class ContactBloc {
     _contactsFetcher.sink.add(contact);
   }
 
-  postContact(Contact contact) async => _repository.postContact(contact);
+  Future<ResultImage> postImage(File image) async => _repository.postImage(image);
+  Future<Contact> postContact(Contact contact) async => _repository.postContact(contact);
 
   dispose() {
     _contactsFetcher.close();
