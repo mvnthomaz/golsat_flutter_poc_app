@@ -25,29 +25,22 @@ class ContactApiProvider {
     }
   }
 
+  // ignore: missing_return
   Future<ResultImage> postImage(File image) async {
     Map<String, String> headers = {'Authorization': 'Client-ID 5887073169dd317'};
-
     final multipartRequest = MultipartRequest('POST', Uri.parse(URL_IMAGE_API + "/image"));
     multipartRequest.headers.addAll(headers);
     final stream = new ByteStream(DelegatingStream.typed(image.openRead()));
     final length = await image.length();
     multipartRequest.files.add(new MultipartFile('image', stream, length,
         filename: basename(image.path)));
-    await multipartRequest.send().then((result) async {
+    var result = await multipartRequest.send();
+    var response = await Response.fromStream(result);
 
-      Response.fromStream(result)
-          .then((response) {
-
-        if (response.statusCode == 200) {
-          ResultImage resultImage = ResultImage.fromJson(json.decode(response.body));
-          return resultImage;
-        }
-        return null;
-      });
-    }).catchError((err) => print('error : '+err.toString()))
-        .whenComplete(()
-    {});
+    if (response.statusCode == 200) {
+      ResultImage resultImage = ResultImage.fromJson(json.decode(response.body));
+      return resultImage;
+    }
     return null;
   }
 

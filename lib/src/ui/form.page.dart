@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/blocs/contact.bloc.dart';
 import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
-import 'package:golsat_flutter_poc_app/src/models/result_image.model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FormContact extends StatefulWidget {
@@ -19,28 +18,10 @@ class _FormContactState extends State<FormContact> {
   final emailController = TextEditingController();
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
     });
-  }
-
-  sendImage() async {
-//    var resultImage = bloc.postImage(_image);
-//    return resultImage;
-    FutureBuilder<ResultImage>(
-      future: bloc.postImage(_image),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-
-
-        }
-
-        // By default, show a loading spinner.
-        return CircularProgressIndicator();
-      },
-    );
-
   }
 
   @override
@@ -51,14 +32,15 @@ class _FormContactState extends State<FormContact> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(icon: Icon(Icons.save), onPressed: () {
-              var contact = Contact();
-              contact.name = nameController.text;
-              contact.phone = phoneController.text;
-              contact.email = emailController.text;
+            child: IconButton(icon: Icon(Icons.save), onPressed: () async {
+              var result = await bloc.postImage(_image);
+              if( result != null ) {
+                var contact = Contact();
+                contact.name = nameController.text;
+                contact.phone = phoneController.text;
+                contact.email = emailController.text;
+                contact.image = result.data.link;
 
-              var resultImage = sendImage();
-              if( resultImage != null ) {
                 var c = bloc.postContact(contact);
                 if (c != null) {
                   Navigator.pop(context, true);
