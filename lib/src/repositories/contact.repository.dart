@@ -8,6 +8,6 @@ class ContactRepository {
   final contactsApiProvider = ContactApiProvider();
 
   Future<List<Contact>> fetchAllContacts() => contactsApiProvider.fetchContactList();
-  Future<ResultImage> postImage(File image) async => contactsApiProvider.postImage(image);
+  Future<ResultImage> postImage(File image) => contactsApiProvider.postImage(image);
   Future<Contact> postContact(Contact contact) => contactsApiProvider.postContact(contact);
 }

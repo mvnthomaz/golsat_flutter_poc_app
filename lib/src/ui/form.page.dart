@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/blocs/contact.bloc.dart';
 import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class FormContact extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _FormContactState extends State<FormContact> {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
+  ProgressDialog pr;
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -33,6 +35,10 @@ class _FormContactState extends State<FormContact> {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(icon: Icon(Icons.save), onPressed: () async {
+              pr = new ProgressDialog(context, ProgressDialogType.Normal);
+              pr.setMessage('Please wait...');
+              pr.show();
+
               var result = await bloc.postImage(_image);
               if( result != null ) {
                 var contact = Contact();
@@ -43,6 +49,7 @@ class _FormContactState extends State<FormContact> {
 
                 var c = bloc.postContact(contact);
                 if (c != null) {
+                  pr.hide();
                   Navigator.pop(context, true);
                 }
               }

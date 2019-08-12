@@ -25,7 +25,6 @@ class ContactApiProvider {
     }
   }
 
-  // ignore: missing_return
   Future<ResultImage> postImage(File image) async {
     Map<String, String> headers = {'Authorization': 'Client-ID 5887073169dd317'};
     final multipartRequest = MultipartRequest('POST', Uri.parse(URL_IMAGE_API + "/image"));
