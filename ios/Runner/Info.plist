@@ -47,5 +47,9 @@
     <string>Este aplicativo deseja ter acesso à sua câmera.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Este aplicativo deseja ter acesso à sua câmera.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Your location is required for xyz benefits for you</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Your location is required for xyz benefits for you</string>
 </dict>
 </plist>

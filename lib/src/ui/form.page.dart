@@ -1,10 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:golsat_flutter_poc_app/src/blocs/contact.bloc.dart';
 import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
 
 class FormContact extends StatefulWidget {
   @override
@@ -12,6 +16,9 @@ class FormContact extends StatefulWidget {
 }
 
 class _FormContactState extends State<FormContact> {
+
+  Future<LocationData> locationData;
+
   File _image;
 
   final nameController = TextEditingController();
@@ -26,8 +33,28 @@ class _FormContactState extends State<FormContact> {
     });
   }
 
+  Future<LocationData> _location() async {
+    var location = new Location();
+    LocationData currentLocation;
+    try {
+      currentLocation = (await location.getLocation());
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        print(e);
+      }
+    }
+    return currentLocation;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    locationData = _location();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -36,7 +63,7 @@ class _FormContactState extends State<FormContact> {
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(icon: Icon(Icons.save), onPressed: () async {
               pr = new ProgressDialog(context, ProgressDialogType.Normal);
-              pr.setMessage('Please wait...');
+              pr.setMessage('Por favor, aguarde...');
               pr.show();
 
               var result = await bloc.postImage(_image);
@@ -57,7 +84,8 @@ class _FormContactState extends State<FormContact> {
           ),
         ],
       ),
-      body: Container(
+      body:
+      Container(
         height: double.infinity,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
@@ -127,7 +155,23 @@ class _FormContactState extends State<FormContact> {
                           }
                           return null;
                         },
-                      )
+                      ),
+                      SizedBox(height: 20,),
+                      FutureBuilder<LocationData>(
+                        future: locationData,
+                        builder: (BuildContext context, AsyncSnapshot<LocationData> snapshot) {
+                          if (snapshot.hasData) {
+                            var date = new DateTime.fromMillisecondsSinceEpoch(snapshot.data.time.toInt());
+                            var format = new DateFormat('dd/MM/yyyy HH:mm');
+                            return Text('Latitude: ${snapshot.data.latitude}\n'
+                                'Longitude: ${snapshot.data.longitude} \n'
+                                'Altitude: ${snapshot.data.altitude} \n'
+                                'Data/Hora: ${format.format(date)}');
+                          } else {
+                            return Text('Localização não definida.');
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),

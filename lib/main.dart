@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/ui/home.page.dart';
 

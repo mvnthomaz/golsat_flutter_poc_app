@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/blocs/contact.bloc.dart';
 import 'package:golsat_flutter_poc_app/src/ui/form.page.dart';
 import 'package:golsat_flutter_poc_app/src/models/contact.model.dart';
+import 'package:golsat_flutter_poc_app/src/ui/simple_bar_chart.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -43,6 +44,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(icon: Icon(Icons.show_chart), onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SimpleBarChart()),
+              );
+            }),
+          ),
+        ],
         title: Text('PoC Golsat Flutter App'),
       ),
       body: StreamBuilder(

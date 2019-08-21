@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "414551898666",
+    "firebase_url": "https://golsat-flutter-poc.firebaseio.com",
+    "project_id": "golsat-flutter-poc",
+    "storage_bucket": "golsat-flutter-poc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414551898666:android:a862a22282db53e0",
+        "android_client_info": {
+          "package_name": "br.com.golsat.golsat_flutter_poc_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414551898666-mpqj5ojvtj9fp6km6quajlg1q0l97u6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmmXwhTBdnNdGNUFI0zBv4lv-OQAD9gMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414551898666-mpqj5ojvtj9fp6km6quajlg1q0l97u6q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414551898666-e5ob17vq50f385u2n466s4261hdka99m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.golsat.golsatFlutterPocApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
