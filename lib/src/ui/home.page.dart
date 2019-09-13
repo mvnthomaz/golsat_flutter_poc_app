@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:golsat_flutter_poc_app/src/blocs/contact.bloc.dart';
 import 'package:golsat_flutter_poc_app/src/ui/form.page.dart';
@@ -11,10 +15,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  StreamSubscription iosSubscription;
+
   @override
   void initState() {
     super.initState();
     bloc.fetchAllContacts();
+    if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+        print(data.toString());
+        // save the token  OR subscribe to a topic here
+      });
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+
+      //FirebaseAppDelegateProxyEnabled
+    }
   }
 
   @override
@@ -66,7 +82,6 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasError) {
               return Text(snapshot.error);
             }
-
             List<Contact> contacts = snapshot.data;
             return ListView.builder(
               itemCount: contacts.length,
